@@ -1,5 +1,5 @@
 <?php
-// the class Festival defines the structure of what every festival object will look like. ie. each festival will have an id, title, description etc...
+// the class customer defines the structure of what every customer object will look like. ie. each customer will have an id, title, description etc...
 // NOTE : For handiness I have the very same spelling as the database attributes
 class Customer {
   public $id;
@@ -47,13 +47,13 @@ class Customer {
         $message = "SQLSTATE error code = ".$error_info[0]."; error message = ".$error_info[2];
         throw new Exception("Database error executing database query: " . $message);
       }
-      // if we get here the select worked correctly, so now time to process the festivals that were retrieved
+      // if we get here the select worked correctly, so now time to process the customers that were retrieved
       
 
       if ($select_stmt->rowCount() !== 0) {
         $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
         while ($row !== FALSE) {
-          // Create $festival object, then put the id, title, description, location etc into $festival
+          // Create $customer object, then put the id, title, description, location etc into $customer
           $customer = new Customer();
           $customer->id = $row['id'];
           $customer->name = $row['name'];
@@ -62,10 +62,10 @@ class Customer {
           $customer->email = $row['email'];
           $customer->image_id = $row['image_id'];
 
-          // $festival now has all it's attributes assigned, so put it into the array $festivals[] 
+          // $customer now has all it's attributes assigned, so put it into the array $customers[] 
           $customers[] = $customer;
           
-          // get the next festival from the list and return to the top of the loop
+          // get the next customer from the list and return to the top of the loop
           $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
         }
       }
@@ -76,12 +76,51 @@ class Customer {
       }
     }
 
-    // return the array of $festivals to the calling code - index.php (about line 6)
+    // return the array of $customers to the calling code - index.php (about line 6)
     return $customers;
   }
 
   public static function findById($id) {
-    throw new Exception("Not yet implemented");
+    $customer = null;
+
+    try {
+      $db = new DB();
+      $db->open();
+      $conn = $db->get_connection();
+
+      $select_sql = "SELECT * FROM customers WHERE id = :id";
+      $select_params = [
+          ":id" => $id
+      ];
+      $select_stmt = $conn->prepare($select_sql);
+      $select_status = $select_stmt->execute($select_params);
+
+      if (!$select_status) {
+        $error_info = $select_stmt->errorInfo();
+        $message = "SQLSTATE error code = ".$error_info[0]."; error message = ".$error_info[2];
+        throw new Exception("Database error executing database query: " . $message);
+      }
+
+      if ($select_stmt->rowCount() !== 0) {
+        $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
+          
+        $customer = new Customer();
+        $customer->id = $row['id'];
+        $customer->name = $row['name'];
+        $customer->address = $row['address'];
+        $customer->phone = $row['phone'];
+        $customer->email = $row['email'];
+        $customer->image_id = $row['image_id'];
+      }
+    }
+    finally {
+      if ($db !== null && $db->is_open()) {
+        $db->close();
+      }
+    }
+
+    return $customer;
+
   }
 }
 ?>

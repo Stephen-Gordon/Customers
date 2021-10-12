@@ -66,33 +66,18 @@ try {
 
               <!--Disabled so the user can't intereact. This form is for viewing only.-->
               <div class="form-group">
-                <label class="labelHidden" for="ticketPrice">Name</label>
-                <input placeholder="Name" type="text" id="Name" class="form-control" value="<?= $customer->Name ?>" disabled />
+                <label class="labelHidden" for="name">Name</label>
+                <input placeholder="Name" type="text" id="Name" class="form-control" value="<?= $customer->name ?>" disabled />
               </div>
 
               <div class="form-group">
-                <label class="labelHidden" for="date">Address</label>
+                <label class="labelHidden" for="address">Address</label>
                 <textarea name="address" rows="3" id="address" class="form-control" disabled><?= $customer->address ?></textarea>
               </div>
 
               <div class="form-group">
-                <label class="labelHidden" for="location">Phone</label>
-                <select class="form-control" name="phone" id="phone" disabled>
-                  <!-- triple === means if it is equal. So is location is equal to "USA" display USA, if location is equal to "Belgium" display ...you get the idea..-->
-                  <option value="USA" <?= (($customer->location === "USA") ? "selected" : "") ?>>USA</option>
-                  <option value="Belgium" <?= (($customer->location === "Belgium") ? "selected" : "") ?>>Belgium</option>>
-                  <option value="Brazil" <?= (($customer->location === "Brazil") ? "selected" : "") ?>>Brazil</option>
-                  <option value="UK" <?= (($customer->location === "UK") ? "selected" : "") ?>>UK</option>
-                  <option value="Germany" <?= (($customer->location === "Germany") ? "selected" : "") ?>>Germany</option>
-                  <option value="Japan" <?= (($customer->location === "Japan") ? "selected" : "") ?>>Japan</option>
-                  <option value="Netherlands" <?= (($customer->location === "Netherlands") ? "selected" : "") ?>>Netherlands</option>
-                  <option value="Hungary" <?= (($customer->location === "Hungary") ? "selected" : "") ?>>Hungary</option>
-                  <option value="Morocco" <?= (($customer->location === "Morocco") ? "selected" : "") ?>>Morocco</option>
-                  <option value="Spain" <?= (($customer->location === "Spain") ? "selected" : "") ?>>Spain</option>
-                  <option value="Canada" <?= (($customer->location === "Canada") ? "selected" : "") ?>>Canada</option>
-                  <option value="Croatia" <?= (($customer->location === "Croatia") ? "selected" : "") ?>>Croatia</option>
-                  <option value="Philippines" <?= (($customer->location === "Philippines") ? "selected" : "") ?>>Philippines</option>
-                </select>
+                <label class="labelHidden" for="phone">phone</label>
+                <input placeholder="Phone" type="text" id="Phone" class="form-control" value="<?= $customer->phone ?>" disabled />
               </div>
 
               <div class="form-group">
