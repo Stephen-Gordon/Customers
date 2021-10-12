@@ -40,13 +40,13 @@ $customers = Customer::findAll();
                   }
                   ?>
                 <div class="card-body">
-                  <h5 class="card-title"><?= $customer->title ?></h5>
-                  <p class="card-text"><?= get_words($customer->description, 20) ?></p>
+                  <h5 class="card-title"><?= $customer->name ?></h5>
+                  
                 </div>
                 <ul class="list-group list-group-flush">
-                  <li class="list-group-item">Location: <?= $customer->name ?></li>
-                  <li class="list-group-item">Start date: <?= $customer->address ?></li>
-                  <li class="list-group-item">End date: <?= $customer->phone ?></li>
+                  <li class="list-group-item">email: <?= $customer->email ?></li>
+                  <li class="list-group-item">address: <?= $customer->address ?></li>
+                  <li class="list-group-item">phone: <?= $customer->phone ?></li>
                 </ul>
               </div>
             </div>
