@@ -11,14 +11,14 @@ try {
   if (!$request->is_valid()) {
     throw new Exception("Illegal request");
   }
-  //the customer_id was passed in from customer-index.php
+  //the Customer_id was passed in from customer-index.php
   // now you extract it from the request object and assign the value to the variable $customer_id  
   $customer_id = $request->input('customer_id');
 
 
   /*Retrieving the correct customer object ($customer) from the Database*/
   //Call findById(id) function to check if this customer exists in the Database
-  $customer = customer::findById($customer_id);
+  $customer = Customer::findById($customer_id);
   // if customer does not exist display error message 
   if ($customer === null) {
     throw new Exception("No customer exists or Illegal request parameter");

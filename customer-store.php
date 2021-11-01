@@ -2,9 +2,7 @@
 require_once 'config.php';
 
 try {
-    // $request = new HttpRequest();
-
-
+    
 
     $rules = [
         "customer_id" => "present|integer|min:1",
@@ -29,42 +27,49 @@ try {
             // you must implement save() function in the Image.php class
             $image->save();
         }
-        $customer = Customer::findById($request->input("customer_id"));
+
+        // !!Check .... If your Image is saved to the Database, but your 'Festival' has not, you know code is correct to at least this point ...
+
+        // Create an empty $festival object
+        $customer = new Customer();
+
+        // festival-create.php passed title, description, location etc... in it's request object
+        // not get title, description, location etc from the request object and assign these values to the appropriate attributes in the $festival object. 
+        
         $customer->name = $request->input("name");
         $customer->address = $request->input("address");
         $customer->email = $request->input("email");
         $customer->phone = $request->input("phone");
-        /*If not null, the user must have uploaded an image, so reset the image id to that of the one we've just uploaded.*/
-        if ($image !== null) {
-            $customer->image_id = $image->id;
-        }
 
-        // you must implement the save() function in the customer class
+        // When the Image was saved to the database ($image->save() above) and ID was created for that image. 
+        // Now get that id from the $image, and assign it to $festival->image_id so it can be saved as in the festival table as a foreign key. 
+        $customer->image_id = $image->id;
+        
+        // save() is a function in the Festival class, you will have written part of it - to update an existing festival
+        // now you will add more code to the save() function so it can create a new festival or update an existing festival.  
         $customer->save();
 
-        $request->session()->set("flash_message", "The customer was successfully updated in the database");
+
+        $request->session()->set("flash_message", "The festival was successfully added to the database");
+        //Class that changes the appearance of the Bootstrap message.
         $request->session()->set("flash_message_class", "alert-info");
-        /*Forget any data that's already been stored in the session.*/
         $request->session()->forget("flash_data");
         $request->session()->forget("flash_errors");
-
+        // redirect back to the home page - festival-index.php
         $request->redirect("/customer-index.php");
     } else {
-        $customer_id = $request->input("customer_id");
-        /*Get all session data from the form and store under the key 'flash_data'.*/
+        //Get all session data from the form and store under the key 'flash_data'.
         $request->session()->set("flash_data", $request->all());
-        /*Do the same for errors.*/
         $request->session()->set("flash_errors", $request->errors());
 
-        $request->redirect("/customer-edit.php?customer_id=" . $customer_id);
+        //Redirect the user to the create page.
+        $request->redirect("/customer-create.php");
     }
 } catch (Exception $ex) {
-    //redirect to the create page...
+    /*Get all data and errors again and redirect.*/
     $request->session()->set("flash_message", $ex->getMessage());
     $request->session()->set("flash_message_class", "alert-warning");
     $request->session()->set("flash_data", $request->all());
     $request->session()->set("flash_errors", $request->errors());
-
-    // not yet implemented
     $request->redirect("/customer-create.php");
 }
